@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.pytest_cache/
+
+# Node
+node_modules/
+.next/
+out/
+
+# 本地数据
+uploads/
+data/
+testdata/
+storage/
+
+# 系统
+.DS_Store
+Thumbs.db
+*.log

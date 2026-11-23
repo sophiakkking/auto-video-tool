@@ -1,0 +1,7 @@
+# 重依赖 — 按 spike 进度逐步安装（部分需要 GPU，体积较大）
+# ✅ 已安装（spike 1 一键成片）: faster-whisper, pillow
+# ⏳ 后续需要时再装:
+pyscenedetect>=0.6.4
+paddleocr>=2.8
+paddlepaddle>=2.6
+opencv-python-headless>=4.10
