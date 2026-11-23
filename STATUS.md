@@ -31,9 +31,15 @@ outputs 含 transcript/subtitles/video/cover 四条本地路径，产物落盘 s
    route 用 `asyncio.to_thread` 跑重活；worker 路径由 Celery 任务薄包装同一函数
 4. 重写 quick.py 时曾丢失 GET /jobs/{job_id} 路由 → 已补回并验证
 
+### web quick 页对接完成 ✅（2026-11-23）
+- `GET /v1/quick/jobs/{id}/files/{name}`：产物下载（白名单防路径穿越，FileResponse 支持 Range → 视频可拖动）
+- `web/app/quick/page.tsx`：拖拽上传 + 标题/平台表单 → POST finish → 轮询状态 → 视频播放器 + 封面 + 4 产物下载
+- 验证：下载 200 / 穿越 404 / Range 206；npm build 通过；dev server 烟测 200
+- 体验：起 dev-db（数据库已在跑）→ 后端 :8000 → 前端 :3000 → 浏览器开 http://localhost:3000/quick
+
 ## Git 状态
 - 远程：https://github.com/sophiakkking/auto-video-tool.git（main 跟踪 origin/main）
-- 基线提交 e9c30c0 已推送；今日修复已提交推送
+- 提交：e9c30c0 基线 → e9f3592 E2E 打通 → dd506ba web quick 页对接，均已推送
 
 ## 环境
 - Python 3.12.8 / Node v20.19.0 / ffmpeg 9.1 静态版（均在 C:\Users\Morefun\tools\）
@@ -43,7 +49,7 @@ outputs 含 transcript/subtitles/video/cover 四条本地路径，产物落盘 s
 - .env 已生成（CELERY_EAGER=1 开发期）；.env 不入库
 
 ## 后续队列（按序）
-1. web 端 quick 页对接：上传 → 轮询状态 → 预览 finished.mp4/cover.png（后端已就绪）
+1. ~~web 端 quick 页对接~~ ✅ 已完成
 2. BGM（QT-3）接免版税曲库 + quick 其余工具（subtitles/cover/bgm/copy）逐个接入
 3. 完整流水线（jobs 路由 + material_understanding/content/storyboard/render 任务）Phase 0 实现
 4. 可选：Docker Desktop（需升级 Windows）→ 生产形态（Redis worker、MinIO、连接池）
