@@ -24,7 +24,7 @@ celery.conf.update(
     task_routes={
         "workers.content_generation": {"queue": "light"},
         "workers.material_understanding": {"queue": "media"},
-        "workers.quick_finish": {"queue": "media"},
+        "workers.quick_tool": {"queue": "media"},
         "workers.render": {"queue": "heavy"},
     },
 )

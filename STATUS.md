@@ -37,6 +37,12 @@ outputs 含 transcript/subtitles/video/cover 四条本地路径，产物落盘 s
 - 验证：下载 200 / 穿越 404 / Range 206；npm build 通过；dev server 烟测 200
 - 体验：起 dev-db（数据库已在跑）→ 后端 :8000 → 前端 :3000 → 浏览器开 http://localhost:3000/quick
 
+### quick 工具全接入 ✅（2026-11-23 收尾）
+- `quick_pipeline.run_quick_tool` 按 job.quick_tool 分发：**finish / subtitles / cover / copy 全部可用**，bgm 保持 501（待曲库）
+- Celery 任务统一为 `workers.quick_tool`；测试 4/4（新增 cover 分发测试）
+- E2E 烟测：POST /v1/quick/cover → 201 quick_review（Instagram 1:1 封面）；bgm → 501
+- web 工具标签已更新（subtitles/cover/copy 标绿）；前端表单的工具选择器明天接
+
 ## Git 状态
 - 远程：https://github.com/sophiakkking/auto-video-tool.git（main 跟踪 origin/main）
 - 提交：e9c30c0 基线 → e9f3592 E2E 打通 → dd506ba web quick 页对接，均已推送
@@ -48,9 +54,9 @@ outputs 含 transcript/subtitles/video/cover 四条本地路径，产物落盘 s
 - 后端启动：backend 下 `.venv/Scripts/python -m uvicorn app.main:app --port 8000 --reload`
 - .env 已生成（CELERY_EAGER=1 开发期）；.env 不入库
 
-## 后续队列（按序）
-1. ~~web 端 quick 页对接~~ ✅ 已完成
-2. BGM（QT-3）接免版税曲库 + quick 其余工具（subtitles/cover/bgm/copy）逐个接入
+## 明天队列（按序）
+1. web quick 页加工具选择器（finish/subtitles/cover/copy 四个入口，后端已全通）
+2. BGM（QT-3）：选免版税曲库方案（建议：内置少量 CC0 曲目 + mood 匹配，Phase 2 再上曲库 API）
 3. 完整流水线（jobs 路由 + material_understanding/content/storyboard/render 任务）Phase 0 实现
 4. 可选：Docker Desktop（需升级 Windows）→ 生产形态（Redis worker、MinIO、连接池）
 5. 清理项：Downloads/installers 残留（whisper-bin-x64.zip 9 字节、7zr.exe、pg-bin/pgvector 压缩包）

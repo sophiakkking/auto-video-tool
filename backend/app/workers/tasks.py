@@ -1,5 +1,5 @@
 """Celery 任务 — Phase 0 逐个实现（队列路由见 celery_app.task_routes）"""
-from app.services.quick_pipeline import run_quick_finish_sync
+from app.services.quick_pipeline import run_quick_tool_sync
 
 from .celery_app import celery
 
@@ -16,15 +16,15 @@ def content_generation_task(job_id: str) -> dict:
     raise NotImplementedError("Phase 0: 调用 services.content / storyboard")
 
 
-@celery.task(name="workers.quick_finish")
-def quick_finish_task(
+@celery.task(name="workers.quick_tool")
+def quick_tool_task(
     job_id: str,
     title: str = "",
     platform: str = "xiaohongshu",
     language: str | None = None,
 ) -> dict:
-    """QT-4 口播一键成片（worker 进程：无运行中事件循环，直接 asyncio.run）"""
-    return run_quick_finish_sync(job_id, title, platform, language)
+    """快速工具统一入口，按 job.quick_tool 分发（worker 进程：直接 asyncio.run）"""
+    return run_quick_tool_sync(job_id, title, platform, language)
 
 
 @celery.task(name="workers.render")

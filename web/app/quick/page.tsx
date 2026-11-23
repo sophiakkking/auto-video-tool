@@ -12,10 +12,10 @@ type Job = {
 
 const TOOLS = [
   { key: "finish", name: "一键成片", desc: "字幕 + 封面 + BGM 打包", ready: true },
-  { key: "subtitles", name: "加字幕", desc: "口播视频烧录字幕", ready: false },
-  { key: "cover", name: "做封面", desc: "自动生成平台封面图", ready: false },
+  { key: "subtitles", name: "加字幕", desc: "口播视频烧录字幕", ready: true },
+  { key: "cover", name: "做封面", desc: "自动生成平台封面图", ready: true },
   { key: "bgm", name: "配音乐", desc: "自动匹配免版税 BGM", ready: false },
-  { key: "copy", name: "视频转文案", desc: "转写 + 平台适配文案", ready: false },
+  { key: "copy", name: "视频转文案", desc: "转写 + 平台适配文案", ready: true },
 ] as const;
 
 function fileUrl(jobId: string, name: string) {

@@ -45,7 +45,7 @@ def test_quick_finish_pipeline():
     from app.db import SessionLocal
     from app.models import Job, Workspace
     from app.services import storage
-    from app.services.quick_pipeline import run_quick_finish_sync
+    from app.services.quick_pipeline import run_quick_tool_sync
 
     async def _get_demo_workspace() -> str:
         async with SessionLocal() as db:
@@ -91,7 +91,7 @@ def test_quick_finish_pipeline():
 
         _run(_set_input())
 
-        result = run_quick_finish_sync(job_id, title="测试标题", platform="xiaohongshu")
+        result = run_quick_tool_sync(job_id, title="测试标题", platform="xiaohongshu")
         assert result["status"] == "quick_review", result
 
         out = job_dir / "out"
@@ -120,3 +120,65 @@ def test_quick_finish_pipeline():
 
         _run(_cleanup())
         shutil.rmtree(job_dir, ignore_errors=True)
+
+
+def test_quick_cover_tool():
+    """cover 工具：无需 ASR，只验证封面生成 + 分发正确"""
+    from sqlalchemy import select
+
+    from app.db import SessionLocal
+    from app.models import Job, Workspace
+    from app.services import storage
+    from app.services.quick_pipeline import run_quick_tool_sync
+
+    async def _setup() -> str:
+        async with SessionLocal() as db:
+            ws = (
+                await db.execute(select(Workspace).where(Workspace.name == "demo"))
+            ).scalar_one_or_none()
+            if ws is None:
+                ws = Workspace(name="demo", plan="free")
+                db.add(ws)
+                await db.commit()
+            job = Job(
+                workspace_id=ws.id,
+                kind="quick",
+                inputs=[],
+                outputs=[],
+                style_platforms=["instagram"],
+                quick_tool="cover",
+                status="quick_created",
+            )
+            db.add(job)
+            await db.commit()
+            await db.refresh(job)
+            job_dir = storage.quick_job_dir(job.id)
+            shutil.copy(TEST_VIDEO, job_dir / "input.mp4")
+            job.inputs = [
+                {"video": str((job_dir / "input.mp4").relative_to(storage.backend_root()))}
+            ]
+            await db.commit()
+            return job.id
+
+    job_id = _run(_setup())
+    try:
+        result = run_quick_tool_sync(job_id, title="封面测试", platform="instagram")
+        assert result["status"] == "quick_review", result
+        assert "cover" in result["outputs"]
+        cover_path = storage.quick_job_dir(job_id) / "out" / "cover.png"
+        assert cover_path.exists()
+
+        from PIL import Image
+
+        img = Image.open(cover_path)
+        assert img.size == (720, 720)  # instagram 1:1
+    finally:
+        async def _cleanup() -> None:
+            async with SessionLocal() as db:
+                job = await db.get(Job, job_id)
+                if job is not None:
+                    await db.delete(job)
+                    await db.commit()
+
+        _run(_cleanup())
+        shutil.rmtree(storage.quick_job_dir(job_id), ignore_errors=True)

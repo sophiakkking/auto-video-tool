@@ -11,8 +11,8 @@ from ..db import get_db
 from ..models import Job
 from ..schemas import JobOut
 from ..services import storage
-from ..services.quick_pipeline import run_quick_finish_sync
-from ..workers.tasks import quick_finish_task
+from ..services.quick_pipeline import run_quick_tool_sync
+from ..workers.tasks import quick_tool_task
 from .jobs import _demo_workspace_id
 
 router = APIRouter(prefix="/v1/quick", tags=["quick"])
@@ -44,13 +44,12 @@ async def run_quick_tool(
 ):
     """口播加字幕 / 做封面 / 配音乐 / 一键成片 / 视频转文案
 
-    已实现: finish（QT-4 一键成片：ASR → 字幕烧录 → 封面 → 导出包）
-    其余工具 Phase 0 逐个接入。
+    已实现: finish / subtitles / cover / copy；bgm 待接免版税曲库 (QT-3)。
     """
     if tool not in _TOOLS:
         raise HTTPException(400, f"unknown tool '{tool}', expected one of {sorted(_TOOLS)}")
-    if tool != "finish":
-        raise HTTPException(501, f"quick tool '{tool}' 尚未接入管线（Phase 0）")
+    if tool == "bgm":
+        raise HTTPException(501, "配音乐待接入免版税曲库 (QT-3)")
 
     job = Job(
         workspace_id=await _demo_workspace_id(db),
@@ -87,7 +86,7 @@ async def run_quick_tool(
     if get_settings().celery_eager:
         # 开发期（无 Redis）：请求内同步跑管线；重活放线程，不阻塞事件循环
         result = await asyncio.to_thread(
-            run_quick_finish_sync, job.id, title, platform, language or None
+            run_quick_tool_sync, job.id, title, platform, language or None
         )
         if result.get("status") == "failed":
             raise HTTPException(500, f"管线执行失败: {result.get('error')}")
@@ -96,7 +95,7 @@ async def run_quick_tool(
 
     try:
         # 生产：Redis + worker 异步执行
-        quick_finish_task.delay(job.id, title=title, platform=platform, language=language or None)
+        quick_tool_task.delay(job.id, title=title, platform=platform, language=language or None)
     except Exception as e:  # broker 不可达
         job.status = "failed"
         job.plan = {"error": f"任务入队失败: {e}"}
