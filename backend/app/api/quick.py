@@ -3,6 +3,7 @@ import asyncio
 from pathlib import Path
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
+from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..config import get_settings
@@ -113,3 +114,21 @@ async def get_quick_job(job_id: str, db: AsyncSession = Depends(get_db)):
     if job is None or job.kind != "quick":
         raise HTTPException(404, "quick job not found")
     return JobOut.model_validate(job)
+
+
+# 产物白名单：防止路径穿越，只能取这四个固定文件
+_FILES = {"transcript.json", "subtitles.srt", "finished.mp4", "cover.png"}
+
+
+@router.get("/jobs/{job_id}/files/{name}")
+async def get_quick_job_file(job_id: str, name: str, db: AsyncSession = Depends(get_db)):
+    """下载快速任务产物（白名单文件名）"""
+    if name not in _FILES:
+        raise HTTPException(404, "file not found")
+    job = await db.get(Job, job_id)
+    if job is None or job.kind != "quick":
+        raise HTTPException(404, "quick job not found")
+    path = storage.quick_job_dir(job_id) / "out" / name
+    if not path.is_file():
+        raise HTTPException(404, "file not found")
+    return FileResponse(path)
