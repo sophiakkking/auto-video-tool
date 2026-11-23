@@ -19,6 +19,8 @@ celery.conf.update(
     timezone="UTC",
     # 开发期（无 Redis）：同步执行，请求内跑完管线；生产设 CELERY_EAGER=0
     task_always_eager=settings.celery_eager,
+    # eager 模式下任务异常必须上抛（本机 celery 版本默认 False 会静默吞错）
+    task_eager_propagates=True,
     task_routes={
         "workers.content_generation": {"queue": "light"},
         "workers.material_understanding": {"queue": "media"},

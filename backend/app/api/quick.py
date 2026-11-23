@@ -1,13 +1,16 @@
 """快速工具路由 — 轻量通道（PRD 5.9）"""
+import asyncio
 from pathlib import Path
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from ..config import get_settings
 from ..db import get_db
 from ..models import Job
 from ..schemas import JobOut
 from ..services import storage
+from ..services.quick_pipeline import run_quick_finish_sync
 from ..workers.tasks import quick_finish_task
 from .jobs import _demo_workspace_id
 
@@ -80,8 +83,18 @@ async def run_quick_tool(
     job.status = "quick_processing"
     await db.commit()
 
+    if get_settings().celery_eager:
+        # 开发期（无 Redis）：请求内同步跑管线；重活放线程，不阻塞事件循环
+        result = await asyncio.to_thread(
+            run_quick_finish_sync, job.id, title, platform, language or None
+        )
+        if result.get("status") == "failed":
+            raise HTTPException(500, f"管线执行失败: {result.get('error')}")
+        await db.refresh(job)
+        return JobOut.model_validate(job)
+
     try:
-        # celery_eager=1（开发期）时同步执行；生产走 Redis + worker
+        # 生产：Redis + worker 异步执行
         quick_finish_task.delay(job.id, title=title, platform=platform, language=language or None)
     except Exception as e:  # broker 不可达
         job.status = "failed"
@@ -90,4 +103,13 @@ async def run_quick_tool(
         raise HTTPException(503, "任务队列不可用（Redis 未就绪？）")
 
     await db.refresh(job)
+    return JobOut.model_validate(job)
+
+
+@router.get("/jobs/{job_id}")
+async def get_quick_job(job_id: str, db: AsyncSession = Depends(get_db)):
+    """快速任务状态"""
+    job = await db.get(Job, job_id)
+    if job is None or job.kind != "quick":
+        raise HTTPException(404, "quick job not found")
     return JobOut.model_validate(job)
