@@ -1,0 +1,71 @@
+{
+  "license": "CC0 (public domain)",
+  "source": "FreePD.com (Kevin MacLeod) via archive.org/details/abook-music-freepd-cc0",
+  "tracks": [
+    {
+      "id": "connecting-rainbows",
+      "file": "connecting-rainbows.mp3",
+      "title": "Connecting Rainbows",
+      "moods": ["neutral", "warm"],
+      "tempo": "mid",
+      "duration_s": 116.0,
+      "default": true
+    },
+    {
+      "id": "energizing",
+      "file": "energizing.mp3",
+      "title": "Energizing",
+      "moods": ["energetic", "upbeat"],
+      "tempo": "fast",
+      "duration_s": 133.4
+    },
+    {
+      "id": "inspiration",
+      "file": "inspiration.mp3",
+      "title": "Inspiration",
+      "moods": ["upbeat", "energetic"],
+      "tempo": "mid-fast",
+      "duration_s": 138.3
+    },
+    {
+      "id": "goldcrest",
+      "file": "goldcrest.mp3",
+      "title": "Goldcrest",
+      "moods": ["warm", "daily"],
+      "tempo": "mid",
+      "duration_s": 142.3
+    },
+    {
+      "id": "river-meditation",
+      "file": "river-meditation.mp3",
+      "title": "River Meditation",
+      "moods": ["calm", "zen"],
+      "tempo": "slow",
+      "duration_s": 167.1
+    },
+    {
+      "id": "romantic-inspiration",
+      "file": "romantic-inspiration.mp3",
+      "title": "Romantic Inspiration",
+      "moods": ["romantic", "warm"],
+      "tempo": "slow",
+      "duration_s": 149.7
+    },
+    {
+      "id": "meditating-beat",
+      "file": "meditating-beat.mp3",
+      "title": "Meditating Beat",
+      "moods": ["tech", "calm"],
+      "tempo": "mid",
+      "duration_s": 157.2
+    },
+    {
+      "id": "celebration",
+      "file": "celebration.mp3",
+      "title": "Celebration",
+      "moods": ["festive", "energetic"],
+      "tempo": "mid-fast",
+      "duration_s": 143.0
+    }
+  ]
+}

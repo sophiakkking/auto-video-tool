@@ -1,0 +1,52 @@
+Backup copies of 50 Creative Commons tracks used as background music by ABook (https://github.com/ntanhpro1221/ABook). Each file keeps its own license and credit:
+
+fpd-022f650aa6e024e3.mp3 - "Connecting Rainbows" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#world/Connecting%20Rainbows.mp3
+fpd-07e974381e5a302b.mp3 - "Stereotype News" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#upbeat/Stereotype%20News.mp3
+fpd-16ef66f2a6022fa3.mp3 - "Parhelion" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#romantic/Parhelion.mp3
+fpd-1b57ce07070d4cc3.mp3 - "Midnight in the Green House" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#world/Midnight%20in%20the%20Green%20House.mp3
+fpd-1e031fda9f2285ff.mp3 - "Blood Eagle" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#world/Blood%20Eagle.mp3
+fpd-1f914c628c3e4e32.mp3 - "Hillbilly Swing" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#world/Hillbilly%20Swing.mp3
+fpd-210f15f47cec0567.mp3 - "Witch Waltz" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#misc/Witch%20Waltz.mp3
+fpd-312f960df7889d97.mp3 - "Bar Brawl" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#upbeat/Bar%20Brawl.mp3
+fpd-37b780249f2e17fd.mp3 - "River Meditation" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#misc/River%20Meditation.mp3
+fpd-389d00048e36ee01.mp3 - "Neptunian Princess" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#misc/Neptunian%20Princess.mp3
+fpd-47bdc9bfa18c38d9.mp3 - "Nomadic Sunset" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#world/Nomadic%20Sunset.mp3
+fpd-4c0a755ad2b33292.mp3 - "I Guess What I'm Trying to Say" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#misc/I%20Guess%20What%20I%27m%20Trying%20to%20Say.mp3
+fpd-4e5b94c986b600ac.mp3 - "Patron Saint of Heists" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#scoring/Patron%20Saint%20of%20Heists.mp3
+fpd-53b85f238b19606c.mp3 - "Romantic Inspiration" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#romantic/Romantic%20Inspiration.mp3
+fpd-5441791adab6c3d5.mp3 - "Brewing Potions" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#misc/Brewing%20Potions.mp3
+fpd-5973adb56d2534d9.mp3 - "Beginning of Conflict" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#scoring/Beginning%20of%20Conflict.mp3
+fpd-5acebf3d6453327c.mp3 - "Big Eyes" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#epic/Big%20Eyes.mp3
+fpd-5fe9d9da3bbf8584.mp3 - "Goldcrest" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#misc/Goldcrest.mp3
+fpd-633f13a11eb1fa3a.mp3 - "Dreams of Vain" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#scoring/Dreams%20of%20Vain.mp3
+fpd-671c0f25bb37805e.mp3 - "The Britons" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#misc/The%20Britons.mp3
+fpd-6c9a5c343a351b0f.mp3 - "Be Chillin" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#upbeat/Be%20Chillin.mp3
+fpd-7226cd5313f15ffe.mp3 - "Night Vigil" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#epic/Night%20Vigil.mp3
+fpd-7d92a860a3d9b2cb.mp3 - "Night in the Castle" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#comedy/Night%20in%20the%20Castle.mp3
+fpd-82f6dbce0d3617c6.mp3 - "Emotional Blockbuster 2" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#epic/Emotional%20Blockbuster%202.mp3
+fpd-878d4dee797d92ef.mp3 - "Inspiration" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#upbeat/Inspiration.mp3
+fpd-87e5472c10154fdf.mp3 - "Be Jammin" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#world/Be%20Jammin.mp3
+fpd-8cc973e9a80019d3.mp3 - "Elf Meditation" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#misc/Elf%20Meditation.mp3
+fpd-93b34102c76375c5.mp3 - "Black Knight" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#epic/Black%20Knight.mp3
+fpd-9aea8747f4691390.mp3 - "Amazing Grace" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#romantic/Amazing%20Grace.mp3
+fpd-9c86cf879c4155d0.mp3 - "Attic Secrets" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#comedy/Attic%20Secrets.mp3
+fpd-9f6ce7e72ac91f89.mp3 - "Joey's Song" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#comedy/Joey%27s%20Song.mp3
+fpd-a0f26458dfa37a15.mp3 - "Drop Point" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#misc/Drop%20Point.mp3
+fpd-ac97bd9918f6cb79.mp3 - "Celebration" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#misc/Celebration.mp3
+fpd-b01e7b753e35c9b5.mp3 - "Painting Room" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#misc/Painting%20Room.mp3
+fpd-b71090110a54aaff.mp3 - "Pina Colada" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#romantic/Pina%20Colada.mp3
+fpd-bc87544db87dd6d7.mp3 - "Monsters in Hotel" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#comedy/Monsters%20in%20Hotel.mp3
+fpd-bf0fa4b5c4312f51.mp3 - "Murder On The Bayou" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#misc/Murder%20On%20The%20Bayou.mp3
+fpd-bf421296305f76bc.mp3 - "Inventing Flight" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#upbeat/Inventing%20Flight.mp3
+fpd-c0a904fe10066fce.mp3 - "Still Pickin" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#upbeat/Still%20Pickin.mp3
+fpd-c37643abec093971.mp3 - "Energizing" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#misc/Energizing.mp3
+fpd-c4169e8779da24e2.mp3 - "A Waltz For Naseem" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#misc/A%20Waltz%20For%20Naseem.mp3
+fpd-c52c33c1edb41ed5.mp3 - "Holiday Weasel" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#comedy/Holiday%20Weasel.mp3
+fpd-d8517372720a23ba.mp3 - "Desert Fox" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#scoring/Desert%20Fox.mp3
+fpd-db629800089a7ac4.mp3 - "Stunted Adventure" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#scoring/Stunted%20Adventure.mp3
+fpd-dd8e6e76e21357b2.mp3 - "Meditating Beat" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#electronic/Meditating%20Beat.mp3
+fpd-ea63b2b9d237b670.mp3 - "Asking Questions" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#horror/Asking%20Questions.mp3
+fpd-ef37130a6cfa7fd7.mp3 - "Hidden Truth" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#horror/Hidden%20Truth.mp3
+fpd-f1bb383531d64d26.mp3 - "Desert Conflict" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#world/Desert%20Conflict.mp3
+fpd-f2a2d3736808e32e.mp3 - "Del Rio Bravo" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#world/Del%20Rio%20Bravo.mp3
+fpd-f8d2f58ccd612edf.mp3 - "Magic in the Garden" from FreePD.com (public domain, CC0) - archived copy at archive.org/details/freepd - https://archive.org/details/freepd#scoring/Magic%20in%20the%20Garden.mp3

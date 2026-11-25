@@ -103,11 +103,15 @@ def test_quick_finish_pipeline():
         assert "保温杯" in transcript[0]["text"]
 
         async def _check_db() -> None:
+            from app.services._media import has_audio
+
             async with SessionLocal() as db:
                 job = await db.get(Job, job_id)
                 assert job.status == "quick_review"
                 assert len(job.outputs) == 1
                 assert "video" in job.outputs[0]
+                assert job.outputs[0].get("bgm"), "finish 应包含 BGM (QT-4)"
+            assert has_audio(out / "finished.mp4")
 
         _run(_check_db())
     finally:
@@ -172,6 +176,70 @@ def test_quick_cover_tool():
 
         img = Image.open(cover_path)
         assert img.size == (720, 720)  # instagram 1:1
+    finally:
+        async def _cleanup() -> None:
+            async with SessionLocal() as db:
+                job = await db.get(Job, job_id)
+                if job is not None:
+                    await db.delete(job)
+                    await db.commit()
+
+        _run(_cleanup())
+        shutil.rmtree(storage.quick_job_dir(job_id), ignore_errors=True)
+
+
+def test_quick_bgm_tool():
+    """bgm 工具：免版税曲库选曲 + auto-duck 混音，无需 ASR"""
+    from sqlalchemy import select
+
+    from app.db import SessionLocal
+    from app.models import Job, Workspace
+    from app.services import storage
+    from app.services._media import has_audio, media_duration
+    from app.services.quick_pipeline import run_quick_tool_sync
+
+    async def _setup() -> str:
+        async with SessionLocal() as db:
+            ws = (
+                await db.execute(select(Workspace).where(Workspace.name == "demo"))
+            ).scalar_one_or_none()
+            if ws is None:
+                ws = Workspace(name="demo", plan="free")
+                db.add(ws)
+                await db.commit()
+            job = Job(
+                workspace_id=ws.id,
+                kind="quick",
+                inputs=[],
+                outputs=[],
+                style_platforms=["xiaohongshu"],
+                quick_tool="bgm",
+                status="quick_created",
+            )
+            db.add(job)
+            await db.commit()
+            await db.refresh(job)
+            job_dir = storage.quick_job_dir(job.id)
+            shutil.copy(TEST_VIDEO, job_dir / "input.mp4")
+            job.inputs = [
+                {"video": str((job_dir / "input.mp4").relative_to(storage.backend_root()))}
+            ]
+            await db.commit()
+            return job.id
+
+    job_id = _run(_setup())
+    try:
+        result = run_quick_tool_sync(job_id, mood="tech")
+        assert result["status"] == "quick_review", result
+        assert "video" in result["outputs"]
+        bgm = result["outputs"].get("bgm")
+        assert bgm and bgm["id"] == "meditating-beat"  # mood=tech → 唯一命中曲目
+        assert "file" not in bgm  # 不泄露本地路径
+
+        out = storage.quick_job_dir(job_id) / "out" / "finished.mp4"
+        assert out.exists()
+        assert has_audio(out)
+        assert abs(media_duration(out) - media_duration(TEST_VIDEO)) < 0.5
     finally:
         async def _cleanup() -> None:
             async with SessionLocal() as db:

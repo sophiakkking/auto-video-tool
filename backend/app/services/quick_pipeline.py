@@ -1,10 +1,10 @@
 """快速工具管线 — Celery 任务与 eager 模式共用的执行体
 
-finish:     ASR → 字幕烧录 → 封面 → 打包 (QT-4)
+finish:     ASR → 字幕烧录 → 封面 → BGM 混音 (QT-4)
 subtitles:  ASR → 字幕烧录 (QT-1)
 cover:      最佳帧 + 标题大字封面 (QT-2)
 copy:       ASR 转写 → 文案 (QT-6，平台适配文案 Phase 2)
-bgm:        曲库未接 (QT-3)，暂不支持
+bgm:        免版税曲库 mood 匹配 + auto-duck 混音 (QT-3)
 """
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ from pathlib import Path
 
 from ..db import SessionLocal
 from ..models import Job
-from . import cover, storage, subtitles
+from . import cover, music, storage, subtitles
 
 
 def _resolve_path(p: str) -> Path:
@@ -59,6 +59,21 @@ def _rel(out: Path, name: str) -> str:
     return str((out / name).relative_to(storage.backend_root()))
 
 
+def _add_bgm(video: str, out: Path, mood: str, track: str) -> dict:
+    """选曲 + 混音到 finished.mp4（temp 混音后原子替换，可原地覆盖输入）。
+
+    返回 {id, title, moods, tempo, license}（不含本地 file 路径，避免泄露）。
+    """
+    from ._media import media_duration
+
+    dur = media_duration(video)
+    picked = music.match_bgm(dur, mood or None, track or None)
+    tmp = out / "_mixed.mp4"
+    music.mix_with_video(video, picked, tmp)
+    tmp.replace(out / "finished.mp4")
+    return {k: v for k, v in picked.items() if k != "file"}
+
+
 def _transcribe(video: str, out: Path, language: str | None) -> list[dict]:
     """ASR 转写 + 落盘 transcript/srt（同步重活，调用方需在非主循环线程）"""
     segs = subtitles.transcribe(video, language=language)
@@ -76,8 +91,13 @@ async def run_quick_tool(
     title: str = "",
     platform: str = "xiaohongshu",
     language: str | None = None,
+    mood: str = "",
+    track: str = "",
 ) -> dict:
-    """按 job.quick_tool 分发执行。异常内部消化，不向上抛。"""
+    """按 job.quick_tool 分发执行。异常内部消化，不向上抛。
+
+    mood/track: BGM 选曲参数（QT-3）— mood 留空 = 自动（默认曲），track 可精确换曲。
+    """
     try:
         job, video = await _load_job(job_id)
         tool = job.quick_tool or "finish"
@@ -104,6 +124,12 @@ async def run_quick_tool(
                 "transcript": _rel(out, "transcript.json"),
                 "subtitles": _rel(out, "subtitles.srt"),
             }
+        elif tool == "bgm":
+            bgm = _add_bgm(video, out, mood, track)
+            outputs = {
+                "video": _rel(out, "finished.mp4"),
+                "bgm": bgm,
+            }
         elif tool == "finish":
             segs = _transcribe(video, out, language)
             subtitles.burn_subtitles(video, segs, out / "finished.mp4")
@@ -111,11 +137,13 @@ async def run_quick_tool(
             cover.extract_best_frame(video, frame)
             cover.make_cover(frame, title, out / "cover.png", platform=platform)
             frame.unlink()
+            bgm = _add_bgm(out / "finished.mp4", out, mood, track)
             outputs = {
                 "video": _rel(out, "finished.mp4"),
                 "cover": _rel(out, "cover.png"),
                 "transcript": _rel(out, "transcript.json"),
                 "subtitles": _rel(out, "subtitles.srt"),
+                "bgm": bgm,
             }
         else:
             raise ValueError(f"未知快速工具: {tool}")
@@ -132,6 +160,8 @@ def run_quick_tool_sync(
     title: str = "",
     platform: str = "xiaohongshu",
     language: str | None = None,
+    mood: str = "",
+    track: str = "",
 ) -> dict:
     """同步包装：worker 进程（无运行中 loop）或 asyncio.to_thread 里调用"""
-    return asyncio.run(run_quick_tool(job_id, title, platform, language))
+    return asyncio.run(run_quick_tool(job_id, title, platform, language, mood, track))

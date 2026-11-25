@@ -10,7 +10,7 @@ from ..config import get_settings
 from ..db import get_db
 from ..models import Job
 from ..schemas import JobOut
-from ..services import storage
+from ..services import music, storage
 from ..services.quick_pipeline import run_quick_tool_sync
 from ..workers.tasks import quick_tool_task
 from .jobs import _demo_workspace_id
@@ -19,6 +19,14 @@ router = APIRouter(prefix="/v1/quick", tags=["quick"])
 
 _TOOLS = {"subtitles", "cover", "bgm", "finish", "copy"}
 _MAX_UPLOAD_MB = 500
+
+_MOODS = {"energetic", "upbeat", "warm", "calm", "romantic", "tech", "festive", "neutral"}
+
+
+@router.get("/music/tracks")
+async def list_music_tracks():
+    """曲库清单（QT-3 用户换曲）"""
+    return music.list_tracks()
 
 
 async def _save_upload(file: UploadFile, dest: Path) -> None:
@@ -40,16 +48,18 @@ async def run_quick_tool(
     title: str = Form(""),
     platform: str = Form("xiaohongshu"),
     language: str = Form(""),
+    mood: str = Form(""),
+    track: str = Form(""),
     db: AsyncSession = Depends(get_db),
 ):
     """口播加字幕 / 做封面 / 配音乐 / 一键成片 / 视频转文案
 
-    已实现: finish / subtitles / cover / copy；bgm 待接免版税曲库 (QT-3)。
+    bgm / finish 支持 mood（自动匹配情绪）与 track（精确换曲，见 GET /music/tracks）。
     """
     if tool not in _TOOLS:
         raise HTTPException(400, f"unknown tool '{tool}', expected one of {sorted(_TOOLS)}")
-    if tool == "bgm":
-        raise HTTPException(501, "配音乐待接入免版税曲库 (QT-3)")
+    if mood and mood not in _MOODS:
+        raise HTTPException(400, f"unknown mood '{mood}', expected one of {sorted(_MOODS)}")
 
     job = Job(
         workspace_id=await _demo_workspace_id(db),
@@ -86,7 +96,8 @@ async def run_quick_tool(
     if get_settings().celery_eager:
         # 开发期（无 Redis）：请求内同步跑管线；重活放线程，不阻塞事件循环
         result = await asyncio.to_thread(
-            run_quick_tool_sync, job.id, title, platform, language or None
+            run_quick_tool_sync,
+            job.id, title, platform, language or None, mood, track,
         )
         if result.get("status") == "failed":
             raise HTTPException(500, f"管线执行失败: {result.get('error')}")
@@ -95,7 +106,10 @@ async def run_quick_tool(
 
     try:
         # 生产：Redis + worker 异步执行
-        quick_tool_task.delay(job.id, title=title, platform=platform, language=language or None)
+        quick_tool_task.delay(
+            job.id, title=title, platform=platform, language=language or None,
+            mood=mood, track=track,
+        )
     except Exception as e:  # broker 不可达
         job.status = "failed"
         job.plan = {"error": f"任务入队失败: {e}"}

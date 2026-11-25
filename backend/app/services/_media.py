@@ -47,3 +47,37 @@ def video_size(path: str | Path) -> tuple[int, int]:
 
 def video_height(path: str | Path) -> int:
     return video_size(path)[1]
+
+
+def media_duration(path: str | Path) -> float:
+    """媒体时长（秒）；探测失败返回 0"""
+    r = subprocess.run(
+        [
+            ffprobe(), "-v", "error",
+            "-show_entries", "format=duration",
+            "-of", "default=noprint_wrappers=1:nokey=1",
+            str(path),
+        ],
+        capture_output=True,
+        text=True,
+    )
+    try:
+        return float(r.stdout.strip())
+    except ValueError:
+        return 0.0
+
+
+def has_audio(path: str | Path) -> bool:
+    """是否存在音频流"""
+    r = subprocess.run(
+        [
+            ffprobe(), "-v", "error",
+            "-select_streams", "a:0",
+            "-show_entries", "stream=codec_type",
+            "-of", "default=noprint_wrappers=1:nokey=1",
+            str(path),
+        ],
+        capture_output=True,
+        text=True,
+    )
+    return "audio" in r.stdout

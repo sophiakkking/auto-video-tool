@@ -22,9 +22,11 @@ def quick_tool_task(
     title: str = "",
     platform: str = "xiaohongshu",
     language: str | None = None,
+    mood: str = "",
+    track: str = "",
 ) -> dict:
     """快速工具统一入口，按 job.quick_tool 分发（worker 进程：直接 asyncio.run）"""
-    return run_quick_tool_sync(job_id, title, platform, language)
+    return run_quick_tool_sync(job_id, title, platform, language, mood, track)
 
 
 @celery.task(name="workers.render")
